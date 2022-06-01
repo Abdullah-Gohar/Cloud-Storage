@@ -10,11 +10,13 @@ public class Client {
         DataOutputStream dout = null;
         DataInputStream din = null;
         ObjectInputStream in;
+        ObjectOutputStream out;
         try {
-            socket = new Socket("localhost",8083);
+            socket = new Socket("localhost",8085);
             dout = new DataOutputStream(socket.getOutputStream());
             din = new DataInputStream(socket.getInputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
             File file = new File("D:\\CN\\Project\\data1.pdf");
             Scanner scn = new Scanner(System.in);
 
