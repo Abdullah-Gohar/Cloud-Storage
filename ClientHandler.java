@@ -13,7 +13,17 @@ public class ClientHandler implements Runnable{
             DataInputStream din = new DataInputStream(socket.getInputStream());
             DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            File file = new File("D:\\CN\\Project\\data.pdf");
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            String name = "dump.txt";
+            try{
+                name = (String) in.readObject();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            File file = new File("D:\\CN\\Project\\"+name);
+
+            
             FileOutputStream fout = new FileOutputStream(file);
             byte[] buffer = new byte[4 * 1024];
             int count;

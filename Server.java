@@ -10,7 +10,7 @@ class Server{
         DataOutputStream dout = null;
         ObjectOutputStream out  = null;
         try{
-            server = new ServerSocket(8080);
+            server = new ServerSocket(8083);
         }
         catch(IOException e){
             e.printStackTrace();
@@ -29,7 +29,15 @@ class Server{
             }
             catch(Exception e){
                 System.out.println("Exception!");
-
+                    
+            }
+            finally{
+                try{
+                    server.close();
+                }
+                catch(IOException e){
+                    e.printStackTrace();
+                }
             }
         }
     }

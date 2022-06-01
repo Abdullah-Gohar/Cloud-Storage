@@ -11,12 +11,16 @@ public class Client {
         DataInputStream din = null;
         ObjectInputStream in;
         try {
-            socket = new Socket("localhost",8080);
+            socket = new Socket("localhost",8083);
             dout = new DataOutputStream(socket.getOutputStream());
             din = new DataInputStream(socket.getInputStream());
             in = new ObjectInputStream(socket.getInputStream());
             File file = new File("D:\\CN\\Project\\data1.pdf");
+            Scanner scn = new Scanner(System.in);
+
             fin = new FileInputStream(file);
+
+            scn.nextLine();
             byte[] buffer = new byte[4 * 1024];
             int count;
             while ((count = fin.read(buffer)) > 0) {
