@@ -18,8 +18,10 @@ public class Client {
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             File file = new File("D:\\CN\\Project\\data1.pdf");
+            System.out.println("Enter Username: ");
             Scanner scn = new Scanner(System.in);
-
+            System.out.println("Enter Password: ");
+            
             fin = new FileInputStream(file);
 
             scn.nextLine();
