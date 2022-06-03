@@ -17,14 +17,27 @@ public class Client {
             din = new DataInputStream(socket.getInputStream());
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            File file = new File("D:\\CN\\Project\\data1.pdf");
+            File file = new File("D:\\CN\\Project\\dump\\data1.txt");
             System.out.println("Enter Username: ");
             Scanner scn = new Scanner(System.in);
+            String name = scn.nextLine();
             System.out.println("Enter Password: ");
-            
+            String pass = scn.nextLine();
+            try{
+                out.writeObject(name);
+                out.writeObject(pass);
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+            String fname = file.getName();
+            try {
+                out.writeObject(fname);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             fin = new FileInputStream(file);
 
-            scn.nextLine();
             byte[] buffer = new byte[4 * 1024];
             int count;
             while ((count = fin.read(buffer)) > 0) {

@@ -14,14 +14,20 @@ public class ClientHandler implements Runnable{
             DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            String name = "dump.txt";
+            String fname = "dump.txt";
+            String user = "";
+            String pass = null;
             try{
-                name = (String) in.readObject();
+                user = (String) in.readObject();
+                pass = (String) in.readObject();
+                fname = (String) in.readObject();
             }
             catch(Exception e){
                 e.printStackTrace();
             }
-            File file = new File("D:\\CN\\Project\\"+name);
+            System.out.println(user);
+            new File(String.format("D:\\CN\\Project\\%s",user)).mkdir();
+            File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user,fname));
 
 
             FileOutputStream fout = new FileOutputStream(file);
@@ -45,6 +51,7 @@ public class ClientHandler implements Runnable{
         
         }
         catch(IOException e){
+            e.printStackTrace();
             System.out.println(e.getStackTrace());
         }
 
