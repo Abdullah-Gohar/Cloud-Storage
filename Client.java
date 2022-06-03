@@ -1,5 +1,8 @@
 import java.util.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.*;
 
 
@@ -36,14 +39,20 @@ public class Client {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println(file.getTotalSpace());
+            System.out.println(file.length());
+            Long len = file.length();
             fin = new FileInputStream(file);
 
-            byte[] buffer = new byte[4 * 1024];
-            int count;
+            out.writeObject(len);
+
+            byte[] buffer = new byte[Math.round(len / 10)];
+            int count; 
+            int i = 0;
             while ((count = fin.read(buffer)) > 0) {
                 dout.write(buffer, 0, count);
             }
-            socket.shutdownOutput();
+            // dout.write(new byte[4*1024]);
             System.out.println("Loop Exit");
             System.out.println((String) in.readObject());
             System.out.println("Got it!");

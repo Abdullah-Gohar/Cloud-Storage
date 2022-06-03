@@ -17,10 +17,12 @@ public class ClientHandler implements Runnable{
             String fname = "dump.txt";
             String user = "";
             String pass = null;
+            Long len = new Long(0);
             try{
                 user = (String) in.readObject();
                 pass = (String) in.readObject();
                 fname = (String) in.readObject();
+                len = (Long) in.readObject();
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -31,13 +33,12 @@ public class ClientHandler implements Runnable{
 
 
             FileOutputStream fout = new FileOutputStream(file);
-            byte[] buffer = new byte[1024 * 1024];
+            byte[] buffer = new byte[Math.round(len/10)];
             int count;
             int i =0;
-            while ((count = din.read(buffer)) > 0) {
+            while(file.length()<=len){
+                count = din.read(buffer);
                 fout.write(buffer, 0, count);
-                i++;
-                System.out.println(i);
             }
             System.out.println("Files");
             String str = "File Recieved!";
