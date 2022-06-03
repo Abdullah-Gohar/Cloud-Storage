@@ -1,6 +1,7 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\Intag\\Desktop\\mssql-jdbc-10.2.1.jre8.jar"
+        "c:\\Users\\Intag\\Desktop\\mssql-jdbc-10.2.1.jre8.jar",
+        "c:\\Users\\tariq\\OneDrive\\Desktop\\sqljdbc_10.2\\enu\\mssql-jdbc-10.2.1.jre17.jar"
     ]
 }
