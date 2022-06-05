@@ -11,10 +11,10 @@ import java.sql.SQLException;
 public class DBConn {
     public static void main(String[] args) {
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
-            // Connection connection = DriverManager.getConnection(
-            //         "jdbc:sqlserver://DESKTOP-5CB18B9:1433;databaseName=Resort_DB;userName=mishaltariq;password=123;trustServerCertificate=true");
+            //Connection connection = DriverManager.getConnection(
+                   // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+             Connection connection = DriverManager.getConnection(
+                     "jdbc:sqlserver://DESKTOP-5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
                     // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
                     // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
             

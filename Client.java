@@ -36,8 +36,8 @@ public class Client {
             else if(choice == 1){
                 login(out,in);
             }
-            // upload(out,in,dout);
-            download(out, in, din);
+            upload(out,in,dout);
+            // download(out, in, din);
             socket.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -47,7 +47,8 @@ public class Client {
 
 
     public static void upload(ObjectOutputStream out,ObjectInputStream in, DataOutputStream dout){
-        File file = new File("D:\\CN\\Project\\dump\\data.txt");
+        // File file = new File("D:\\CN\\Project\\dump\\data.txt");
+        File file = new File("C:\\Users\\tariq\\OneDrive\\Desktop\\Computer Arch and Org\\COA LEC 1");
         FileInputStream fin = null;
         String fname = file.getName();
         try {
@@ -165,9 +166,6 @@ public class Client {
         }
         
     }
-
-
-
 
     public static void login(ObjectOutputStream out, ObjectInputStream in){
         String userName;
