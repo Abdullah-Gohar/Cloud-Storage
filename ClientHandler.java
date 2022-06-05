@@ -36,7 +36,9 @@ public class ClientHandler implements Runnable{
             byte[] buffer = new byte[Math.round(len/10)];
             int count;
             int i =0;
-            while(file.length()<=len){
+            while(file.length()<len){
+                System.out.println(len);
+                System.out.println(file.length());
                 count = din.read(buffer);
                 fout.write(buffer, 0, count);
             }

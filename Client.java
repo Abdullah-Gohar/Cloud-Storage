@@ -20,7 +20,7 @@ public class Client {
             din = new DataInputStream(socket.getInputStream());
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            File file = new File("D:\\CN\\Project\\dump\\data1.txt");
+            File file = new File("D:\\CN\\Project\\dump\\data.txt");
             System.out.println("Enter Username: ");
             Scanner scn = new Scanner(System.in);
             String name = scn.nextLine();
