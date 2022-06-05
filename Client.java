@@ -51,6 +51,8 @@ public class Client {
                     upload(out,in,dout);
                 } else if (choice == 1) {
                     download(out,in,din);
+                }else if (choice == 2){
+                    delete(out,in);
                 }
             }
             socket.close();
@@ -60,6 +62,24 @@ public class Client {
         }
     }
 
+    public static void delete(ObjectOutputStream out,ObjectInputStream in){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the file name to delete: ");
+        String fname = sc.nextLine();
+        try{
+            out.writeObject(fname);
+            Integer status = (Integer) in.readObject();
+            if(status == 0){
+                System.out.println("Failed to delete the file");
+            }else if(status == 1){
+                System.out.println("Deleted the file!");
+            }
+        }catch(IOException e){ 
+            e.printStackTrace();
+        }catch(ClassNotFoundException ce){
+            ce.printStackTrace();
+        }
+    }
 
     public static void upload(ObjectOutputStream out,ObjectInputStream in, DataOutputStream dout){
         File file = new File("D:\\CN\\Project\\dump\\data.pdf");
@@ -92,6 +112,7 @@ public class Client {
             System.out.println("Loop Exit");
             System.out.println((String) in.readObject());
             System.out.println("Got it!");
+            fin.close();
         }catch(IOException e){
             e.printStackTrace();
         }catch(ClassNotFoundException ce){
@@ -115,6 +136,9 @@ public class Client {
 
                 i++;
             }
+
+            fout.close();
+            
             System.out.println("Files");
             String str = "File Recieved!";
             out.writeObject(str);

@@ -51,6 +51,8 @@ public class ClientHandler implements Runnable{
                     upload(out, in, dout);
                 } else if (choice ==0) {
                     download(out, in, din);
+                }else if (choice == 2){
+                    delete(out,in);
                 }
                 // download(out, in, din);
                 // upload(out,in,dout);
@@ -72,7 +74,24 @@ public class ClientHandler implements Runnable{
             System.out.println(e.getStackTrace());
         }
     }
+    public void delete(ObjectOutputStream out, ObjectInputStream in){
+        String fname = "";
+        try{
+            fname = (String) in.readObject();
+            File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
+            if(file.delete()){
+                out.writeObject(1);
+            }
+            else{
+                out.writeObject(0);
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException ce){
+            ce.printStackTrace();
+        }
 
+    }
     public void upload(ObjectOutputStream out, ObjectInputStream in, DataOutputStream dout) {
         File file = new File("D:\\CN\\Project\\dump\\data.txt");
         FileInputStream fin = null;
@@ -95,6 +114,7 @@ public class ClientHandler implements Runnable{
             while ((count = fin.read(buffer)) > 0) {
                 dout.write(buffer, 0, count);
             }
+            fin.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,7 +163,7 @@ public class ClientHandler implements Runnable{
             String str = "File Recieved!";
             out.writeObject(str);
             System.out.println("Files2");
-
+            fout.close();
 
         } catch (IOException e) {
             e.printStackTrace();
