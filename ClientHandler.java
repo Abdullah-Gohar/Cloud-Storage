@@ -37,9 +37,23 @@ public class ClientHandler implements Runnable{
             if (choice == 0) {
                 register(out, in);
             } else if (choice == 1) {
+                
                 login(out,in);
+                try {
+                    choice = (Integer) in.readObject();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException ce) {
+                    ce.printStackTrace();
+                }
+                
+                if (choice == 1) {
+                    upload(out, in, dout);
+                } else if (choice ==0) {
+                    download(out, in, din);
+                }
                 // download(out, in, din);
-                upload(out,in,dout);
+                // upload(out,in,dout);
 
             }
 
@@ -114,6 +128,17 @@ public class ClientHandler implements Runnable{
 
                 i++;
             }
+            try{
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+
+                PreparedStatement statement = connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"+String.format("%d",len)+" where UserName = '"+user+"'");
+
+                ResultSet result = statement.executeQuery();
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+
             System.out.println("Files");
             String str = "File Recieved!";
             out.writeObject(str);
@@ -162,10 +187,10 @@ public class ClientHandler implements Runnable{
                 } else {
                     int clientstat = 0;
                     int TotalSpace = 0;
-                    int occSpace = 0;
+                    // int occSpace = 0;
                     PreparedStatement statement1 = connection
                             .prepareStatement("Insert into Client values ('" + arr[0] + "','" + arr[1] + "','" + arr[2]
-                                    + " ','" + arr[3] + "','" + clientstat + "','" + TotalSpace + "', " + occSpace + ")");
+                                    + " ','" + arr[3] + "','" + clientstat + "','" + TotalSpace + "', DEFAULT)");
                     statement1.execute();
                     new File(String.format("D:\\CN\\Project\\%s", arr[0])).mkdir();
                     System.out.println("User addded");

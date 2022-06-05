@@ -35,9 +35,24 @@ public class Client {
             }
             else if(choice == 1){
                 login(out,in);
+            
+
+                System.out.println("Enter 0 to Upload and enter 1 to Download");
+                choice = sc.nextInt();
+                sc.nextLine();
+
+                try{
+                    out.writeObject(choice);
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                // upload(out,in,dout);
+                if (choice == 0) {
+                    upload(out,in,dout);
+                } else if (choice == 1) {
+                    download(out,in,din);
+                }
             }
-            // upload(out,in,dout);
-            download(out, in, din);
             socket.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -47,7 +62,7 @@ public class Client {
 
 
     public static void upload(ObjectOutputStream out,ObjectInputStream in, DataOutputStream dout){
-        File file = new File("D:\\CN\\Project\\dump\\data.txt");
+        File file = new File("D:\\CN\\Project\\dump\\data.pdf");
         FileInputStream fin = null;
         String fname = file.getName();
         try {
@@ -174,9 +189,7 @@ public class Client {
         String pass;
         Scanner sc = new Scanner(System.in);
         try {
-            out.writeObject(1
-            
-            );
+            out.writeObject(1 );
         } catch (IOException e) {
             e.printStackTrace();
         }

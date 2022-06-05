@@ -9,7 +9,7 @@ Email varchar(50),
 Purpose varchar(200),
 ClientStatus int,
 SpaceOcc int,
-TotalSpace int Default(2097152)
+TotalSpace int Default(2147483648)
 
 )
 INSERT INTO ADMIN VALUES('ayounas','kamkasjksajs')
