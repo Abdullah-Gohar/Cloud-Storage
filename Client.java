@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.imageio.IIOException;
+
 import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +26,15 @@ public class Client {
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             File file = new File("D:\\CN\\Project\\dump\\data.txt");
+            int choice;
+            System.out.println("Enter 0 for Registeration and enter 1 to login");
+            choice = sc.nextInt();
+            if (choice == 0){
+                register(out,in);
+            }
+            else if(choice == 1){
+                // login(out,in);
+            }
             System.out.println("Enter Username: ");
             Scanner scn = new Scanner(System.in);
             String name = scn.nextLine();
@@ -48,7 +60,7 @@ public class Client {
 
             out.writeObject(len);
 
-            byte[] buffer = new byte[Math.round(len / 10)];
+            byte[] buffer = new byte[Functions.buffer_size(len)];
             
             fin = new FileInputStream(file);
 
@@ -69,18 +81,22 @@ public class Client {
     }
 
 
-    public void register(ObjectOutputStream out){
+    public static void register(ObjectOutputStream out,ObjectInputStream in){
         Scanner sc = new Scanner(System.in);
         int count;
         int i = 0;
         int choice;
-        System.out.println("Enter 0 for Registeration and enter 1 to login");
-        choice = sc.nextInt();
-        if (choice == 0) {
-            String userName;
-            String pass;
-            String purpose;
-            String email;
+        try{
+            out.writeObject(0);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        
+        String userName;
+        String pass;
+        String purpose;
+        String email;
+        while(true){
             System.out.println("Enter user name");
             userName = sc.next();
             System.out.println("Enter password");
@@ -99,6 +115,22 @@ public class Client {
             catch(IOException e){
                 e.printStackTrace();
             }
+            Integer status = 1;
+            try {
+                status = (Integer) in.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException ce){
+                ce.printStackTrace();
+            }
+
+            if(status == 0){
+                System.out.println("Username already taken, please choose another one: ");
+            }
+            else{
+                break;
+            }
         }
+
     }
 }
