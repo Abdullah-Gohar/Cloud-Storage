@@ -37,7 +37,7 @@ public class Client {
                 login(out,in);
             
 
-                System.out.println("Enter 0 to Upload and enter 1 to Download");
+                System.out.println("Enter 0 to Upload, enter 1 to Download or enter 2 to delete: ");
                 choice = sc.nextInt();
                 sc.nextLine();
 
