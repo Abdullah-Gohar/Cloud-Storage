@@ -50,20 +50,14 @@ public class Client {
 
             byte[] buffer = new byte[Math.round(len / 10)];
             
-            // File file = new File("D:\\CN\\Project\\data1.pdf");
-            // System.out.println("Enter Username: ");
-            // Scanner scn = new Scanner(System.in);
-            // System.out.println("Enter Password: ");
-            
             fin = new FileInputStream(file);
 
-            //scn.nextLine();
-            // byte[] buffer = new byte[4 * 1024];
+
             int count;
             while ((count = fin.read(buffer)) > 0) {
                 dout.write(buffer, 0, count);
             }
-            // dout.write(new byte[4*1024]);
+
             System.out.println("Loop Exit");
             System.out.println((String) in.readObject());
             System.out.println("Got it!");

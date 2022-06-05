@@ -20,34 +20,19 @@ public class ClientHandler implements Runnable{
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             String fname = "dump.txt";
             String user = "";
-            String pass = null;
+            String pass = "";
             Long len = 0L;
             try{
                 user = (String) in.readObject();
                 pass = (String) in.readObject();
                 fname = (String) in.readObject();
                 len = (Long) in.readObject();
-                // BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                
-                //PrintWriter w = new PrintWriter(socket.getOutputStream(), true);
-                String name = "dump.txt";
-                // try{
-                //     name = (String) in.readObject();
-                // }
-                // catch(Exception e){
-                //     e.printStackTrace();
-                // }
-                String userName = "";
 
                 
-                System.out.println(user);
                 new File(String.format("D:\\CN\\Project\\%s",user)).mkdir();
                 File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user,fname));
 
                 
-                // File file = new File("F:\\CloudStorage\\mssql-jdbc-10.2.1.jre8");
-
-
                 FileOutputStream fout = new FileOutputStream(file);
                 byte[] buffer = new byte[Math.round(len/10)];
                 int count;
