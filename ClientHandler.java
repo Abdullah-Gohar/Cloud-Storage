@@ -8,6 +8,7 @@ public class ClientHandler implements Runnable{
     ArrayList UN = new ArrayList<>();
     //clientData Clientdata;
     String[] arr;
+    private String user;
     public ClientHandler(Socket s){
         this.socket = s;
     }
@@ -19,7 +20,7 @@ public class ClientHandler implements Runnable{
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             String fname = "dump.txt";
-            String user = "";
+            user = "";
             String pass = "";
             Long len = 0L;
             Integer choice = 0;
@@ -36,13 +37,11 @@ public class ClientHandler implements Runnable{
             if (choice == 0) {
                 register(out, in);
             } else if (choice == 1) {
-                // login(out,in);
+                login(out,in);
             }
 
 
             try{
-                user = (String) in.readObject();
-                pass = (String) in.readObject();
                 fname = (String) in.readObject();
                 len = (Long) in.readObject();
 
@@ -57,8 +56,7 @@ public class ClientHandler implements Runnable{
                 while(file.length()<len){
                     count = din.read(buffer);
                     fout.write(buffer, 0, count);
-                    System.out.println(file.length());
-                    System.out.println(i);
+
                     i++;
                 }
                 System.out.println("Files");
@@ -88,12 +86,13 @@ public class ClientHandler implements Runnable{
     public void register(ObjectOutputStream out, ObjectInputStream in){
         try {
             Connection connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("select UserName from Client");
 
             ResultSet result = statement.executeQuery();
             while(true){
+                System.out.println("kuch bhi dal do");
                 try {
                     // Clientdata = (clientData) in.readObject();
                     arr = (String[]) in.readObject();
@@ -104,13 +103,14 @@ public class ClientHandler implements Runnable{
                 // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=Resort_DB;userName=admin;password=123;trustServerCertificate=true");
 
                 while (result.next()) {
-
+                    System.out.println(result.getString("UserName"));
                     UN.add(result.getString("UserName").trim());
                 }
                 // System.out.println(UN);
                 if (UN.contains(arr[0])) {
                     try{
                         out.writeObject(0);
+                        continue;
                     }catch(IOException e){
                         e.printStackTrace();
                     }
@@ -126,7 +126,6 @@ public class ClientHandler implements Runnable{
                     System.out.println("User addded");
                     try {
                         out.writeObject(1);
-                        continue;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -136,7 +135,7 @@ public class ClientHandler implements Runnable{
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                break;
+                break; 
 
 
             }
@@ -145,60 +144,71 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void login(ObjectInputStream in, ObjectOutputStream out){
-        try {
-
+    public void login( ObjectOutputStream out, ObjectInputStream in){
+        while(true){
             try {
-                // Clientdata = (clientData) in.readObject();
-                arr = (String[]) in.readObject();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            // Connection connection = DriverManager.getConnection(
-            // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=Resort_DB;userName=admin;password=123;trustServerCertificate=true");
-            Connection connection = DriverManager.getConnection(
-             // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
-             "jdbc:sqlserver://5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
+                try {
+                    // Clientdata = (clientData) in.readObject();
+                    arr = (String[]) in.readObject();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Connection connection = DriverManager.getConnection(
+                "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+                // Connection connection = DriverManager.getConnection(
+                // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+                // "jdbc:sqlserver://5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
 
 
-            PreparedStatement statement = connection.prepareStatement("select UserName from Client");
+                PreparedStatement statement = connection.prepareStatement("select UserName from Client");
 
-            ResultSet result = statement.executeQuery();
-            String password;
+                ResultSet result = statement.executeQuery();
+                String password;
 
-            while (result.next()) {
-
-                UN.add(result.getString("UserName").trim());
-            }
-            // System.out.println(UN);
-            if (UN.contains(arr[0])) {
-                System.out.println("ID exists");
-                //String userName= UN.indexOf(arr[0])
-                PreparedStatement statement1 = connection.prepareStatement("select Pass from Client where UserName="+arr[0]);
-                ResultSet result1 = statement.executeQuery();
                 while (result.next()) {
 
-                    if(result1.getString("UserName").equals(arr[0]))
-                    {
-                        password=result.getString("Pass");
-                        if(arr[1]==password)
+                    UN.add(result.getString("UserName").trim());
+                }
+                boolean status = true;
+                // System.out.println(UN);
+                if (UN.contains(arr[0])) {
+                    System.out.println("ID exists");
+                    //String userName= UN.indexOf(arr[0])
+                    PreparedStatement statement1 = connection.prepareStatement("select Pass from Client where UserName='"+arr[0]+"'");
+                    ResultSet result1 = statement1.executeQuery();
+                    while (result1.next()) {
+
+                        password=result1.getString("Pass");
+                        if(arr[1].equals(password))
                         {
                             System.out.println("Login Successful!");
                         }
                         else
                         {
                             System.out.println("incorrect password!");
+                            status = false;
                         }
+                        
                     }
-                    
+                } 
+                else {
+                    System.out.println("ID not found!");
+                    status = false;
                 }
-            } 
-            else {
-                System.out.println("ID not found!");
+                if(!status){
+                    try {
+                        out.writeObject(0);
+                        continue;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }               
+                connection.close();
+                user = arr[0];
+                break;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-            connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
     }
 

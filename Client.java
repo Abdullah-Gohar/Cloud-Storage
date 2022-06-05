@@ -33,28 +33,29 @@ public class Client {
                 register(out,in);
             }
             else if(choice == 1){
-                // login(out,in);
+                login(out,in);
             }
-            System.out.println("Enter Username: ");
-            Scanner scn = new Scanner(System.in);
-            String name = scn.nextLine();
+            // System.out.println("Enter Username: ");
+            // Scanner scn = new Scanner(System.in);
+            // String name = scn.nextLine();
+            // System.out.println("Enter Password: ");
+            // String pass = scn.nextLine();
+            // try{
+            //     out.writeObject(name);
+            //     out.writeObject(pass);
+            // }
+            // catch(IOException e){
+            //     e.printStackTrace();
+            // }
             System.out.println("Enter Password: ");
-            String pass = scn.nextLine();
-            try{
-                out.writeObject(name);
-                out.writeObject(pass);
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
             String fname = file.getName();
             try {
                 out.writeObject(fname);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(file.getTotalSpace());
-            System.out.println(file.length());
+            // System.out.println(file.getTotalSpace());
+            // System.out.println(file.length());
             Long len = file.length();
             fin = new FileInputStream(file);
 
@@ -137,10 +138,18 @@ public class Client {
 
 
 
-    public void login(ObjectOutputStream out, ObjectInputStream in){
+    public static void login(ObjectOutputStream out, ObjectInputStream in){
         String userName;
         String pass;
         Scanner sc = new Scanner(System.in);
+        try {
+            out.writeObject(1
+            
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         while(true){
             System.out.println("Enter user name");
             userName = sc.next();
@@ -151,6 +160,21 @@ public class Client {
                 out.writeObject(data);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            Integer status = 1;
+            try {
+                status = (Integer) in.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException ce) {
+                ce.printStackTrace();
+            }
+            System.out.println(status);
+            if (status == 0) {
+                System.out.println("Invalid data, please try again!");
+            } else {
+                break;
             }
 
         }
