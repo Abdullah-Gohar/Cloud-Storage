@@ -105,4 +105,62 @@ public class ClientHandler implements Runnable{
             ex.printStackTrace();
         }
     }
+
+    public void login(ObjectInputStream in, ObjectOutputStream out){
+        try {
+
+            try {
+                // Clientdata = (clientData) in.readObject();
+                arr = (String[]) in.readObject();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Connection connection = DriverManager.getConnection(
+            // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=Resort_DB;userName=admin;password=123;trustServerCertificate=true");
+            Connection connection = DriverManager.getConnection(
+             // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+             "jdbc:sqlserver://5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
+
+
+            PreparedStatement statement = connection.prepareStatement("select UserName from Client");
+
+            ResultSet result = statement.executeQuery();
+            String password;
+
+            while (result.next()) {
+
+                UN.add(result.getString("UserName").trim());
+            }
+            // System.out.println(UN);
+            if (UN.contains(arr[0])) {
+                System.out.println("ID exists");
+                //String userName= UN.indexOf(arr[0])
+                PreparedStatement statement1 = connection.prepareStatement("select Pass from Client where UserName="+arr[0]);
+                ResultSet result1 = statement.executeQuery();
+                while (result.next()) {
+
+                    if(result1.getString("UserName").equals(arr[0]))
+                    {
+                        password=result.getString("Pass");
+                        if(arr[1]==password)
+                        {
+                            System.out.println("Login Successful!");
+                        }
+                        else
+                        {
+                            System.out.println("incorrect password!");
+                        }
+                    }
+                    
+                }
+            } 
+            else {
+                System.out.println("ID not found!");
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

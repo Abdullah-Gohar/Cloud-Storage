@@ -100,5 +100,22 @@ public class Client {
                 e.printStackTrace();
             }
         }
+        else if(choice==1)
+        {
+            String userName;
+            String pass;
+            System.out.println("Enter user name");
+            userName = sc.next();
+            System.out.println("Enter password");
+            pass = sc.next();
+            String[] data = { userName, pass};
+            try{
+                out.writeObject(data);
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        
     }
 }
