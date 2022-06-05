@@ -186,6 +186,12 @@ public class Client {
             catch(IOException e){
                 e.printStackTrace();
             }
+
+            
+
+
+
+
             Integer status = 1;
             try {
                 status = (Integer) in.readObject();
@@ -197,6 +203,10 @@ public class Client {
 
             if(status == 0){
                 System.out.println("Username already taken, please choose another one: ");
+            }
+            else if(status == -1){
+                System.out.println("dfa ho space nahi he ");
+                break;
             }
             else{
                 break;

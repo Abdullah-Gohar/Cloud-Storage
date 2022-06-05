@@ -1,10 +1,13 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.sql.*;
 
 public class ClientHandler implements Runnable{
+    
     private Socket socket;
+    public static boolean status = true; 
     ArrayList UN = new ArrayList<>();
     //clientData Clientdata;
     String[] arr;
@@ -13,15 +16,22 @@ public class ClientHandler implements Runnable{
         this.socket = s;
     }
 
+    
+
+
     public void run(){
         try{
+           
             DataInputStream din = new DataInputStream(socket.getInputStream());
             DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            FileInputStream fin;
             String fname = "dump.txt";
+
             user = "";
             String pass = "";
+            String filename = "";
             Long len = 0L;
             Integer choice = 0;
 
@@ -51,8 +61,6 @@ public class ClientHandler implements Runnable{
                     upload(out, in, dout);
                 } else if (choice ==0) {
                     download(out, in, din);
-                }else if (choice == 2){
-                    delete(out,in);
                 }
                 // download(out, in, din);
                 // upload(out,in,dout);
@@ -74,24 +82,7 @@ public class ClientHandler implements Runnable{
             System.out.println(e.getStackTrace());
         }
     }
-    public void delete(ObjectOutputStream out, ObjectInputStream in){
-        String fname = "";
-        try{
-            fname = (String) in.readObject();
-            File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
-            if(file.delete()){
-                out.writeObject(1);
-            }
-            else{
-                out.writeObject(0);
-            }
-        }catch(IOException e){
-            e.printStackTrace();
-        }catch(ClassNotFoundException ce){
-            ce.printStackTrace();
-        }
 
-    }
     public void upload(ObjectOutputStream out, ObjectInputStream in, DataOutputStream dout) {
         File file = new File("D:\\CN\\Project\\dump\\data.txt");
         FileInputStream fin = null;
@@ -114,7 +105,6 @@ public class ClientHandler implements Runnable{
             while ((count = fin.read(buffer)) > 0) {
                 dout.write(buffer, 0, count);
             }
-            fin.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,11 +140,12 @@ public class ClientHandler implements Runnable{
             }
             try{
                 Connection connection = DriverManager.getConnection(
-                        "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+                       "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
 
-                PreparedStatement statement = connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"+String.format("%d",len)+" where UserName = '"+user+"'");
-
-                ResultSet result = statement.executeQuery();
+                System.out.println("Update Client Set SpaceOcc = SpaceOcc+"+String.format("%d",len)+" where UserName = '"+user+"'");
+                       PreparedStatement statement = connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"+String.format("%d",len)+" where UserName = '"+user+"'");
+                   //   ResultSet resultSet = statement.executeQuery();
+                 statement.executeQuery();
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -163,7 +154,7 @@ public class ClientHandler implements Runnable{
             String str = "File Recieved!";
             out.writeObject(str);
             System.out.println("Files2");
-            fout.close();
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -173,10 +164,17 @@ public class ClientHandler implements Runnable{
         }
     } 
 
+     
+
+
+
+
+
+
     public void register(ObjectOutputStream out, ObjectInputStream in){
         try {
             Connection connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+                    "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("select UserName from Client");
 
@@ -196,6 +194,16 @@ public class ClientHandler implements Runnable{
                     System.out.println(result.getString("UserName"));
                     UN.add(result.getString("UserName").trim());
                 }
+             if(UN.size()>=100){
+                        System.out.println("Access Denied !!!! NO space !!!DAFA HO");
+                        try {
+                            out.writeObject(-1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        
+                }
+            else {
                 // System.out.println(UN);
                 if (UN.contains(arr[0])) {
                     try{
@@ -229,10 +237,12 @@ public class ClientHandler implements Runnable{
 
 
             }
+        }
         }catch(Exception e){
             e.printStackTrace();
         }
     }
+    
 
     public void login( ObjectOutputStream out, ObjectInputStream in){
         while(true){
@@ -244,7 +254,7 @@ public class ClientHandler implements Runnable{
                     e.printStackTrace();
                 }
                 Connection connection = DriverManager.getConnection(
-                "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+                "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
                 // Connection connection = DriverManager.getConnection(
                 // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
                 // "jdbc:sqlserver://5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
