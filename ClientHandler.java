@@ -38,50 +38,95 @@ public class ClientHandler implements Runnable{
                 register(out, in);
             } else if (choice == 1) {
                 login(out,in);
+                // download(out, in, din);
+                upload(out,in,dout);
+
             }
 
 
-            try{
-                fname = (String) in.readObject();
-                len = (Long) in.readObject();
 
-                
-                File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user,fname));
+            out.close();
+            dout.close();
+            // fout.close();
+            din.close();
+            socket.close();
 
-                
-                FileOutputStream fout = new FileOutputStream(file);
-                byte[] buffer = new byte[Functions.buffer_size(len)];
-                int count;
-                int i =0;
-                while(file.length()<len){
-                    count = din.read(buffer);
-                    fout.write(buffer, 0, count);
 
-                    i++;
-                }
-                System.out.println("Files");
-                String str = "File Recieved!";
-                out.writeObject(str);
-                System.out.println("Files2");
-                out.close();
-                dout.close();
-                //fout.close();
-                din.close();
-                socket.close();
-        
-            }
-            catch(IOException e){
-                e.printStackTrace();
-                // System.out.println(e.getStackTrace());
-            }
-            catch(ClassNotFoundException ce){
-                ce.printStackTrace();
-            }
+            
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getStackTrace());
         }
-}
+    }
+
+    public void upload(ObjectOutputStream out, ObjectInputStream in, DataOutputStream dout) {
+        File file = new File("D:\\CN\\Project\\dump\\data.txt");
+        FileInputStream fin = null;
+        String fname = file.getName();
+        try {
+            out.writeObject(fname);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // System.out.println(file.getTotalSpace());
+        // System.out.println(file.length());
+        Long len = file.length();
+        try {
+            fin = new FileInputStream(file);
+            out.writeObject(len);
+
+            byte[] buffer = new byte[Functions.buffer_size(len)];
+
+            int count;
+            while ((count = fin.read(buffer)) > 0) {
+                dout.write(buffer, 0, count);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            System.out.println("Loop Exit");
+            System.out.println((String) in.readObject());
+            System.out.println("Got it!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ce) {
+            ce.printStackTrace();
+        }
+    }
+
+
+    public void download(ObjectOutputStream out,ObjectInputStream in,DataInputStream din){
+        try {
+            String fname = (String) in.readObject();
+            Long len = (Long) in.readObject();
+            File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
+
+            FileOutputStream fout = new FileOutputStream(file);
+            byte[] buffer = new byte[Functions.buffer_size(len)];
+            int count;
+            int i = 0;
+            while (file.length() < len) {
+                count = din.read(buffer);
+                fout.write(buffer, 0, count);
+
+                i++;
+            }
+            System.out.println("Files");
+            String str = "File Recieved!";
+            out.writeObject(str);
+            System.out.println("Files2");
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // System.out.println(e.getStackTrace());
+        } catch (ClassNotFoundException ce) {
+            ce.printStackTrace();
+        }
+    } 
 
     public void register(ObjectOutputStream out, ObjectInputStream in){
         try {
@@ -202,7 +247,15 @@ public class ClientHandler implements Runnable{
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }               
+                }    
+                else{
+                    try {
+                        out.writeObject(1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }   
+                System.out.println("Great Success!");       
                 connection.close();
                 user = arr[0];
                 break;
