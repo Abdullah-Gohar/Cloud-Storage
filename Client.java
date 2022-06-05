@@ -131,6 +131,28 @@ public class Client {
                 break;
             }
         }
+        
+    }
 
+
+
+
+    public void login(ObjectOutputStream out, ObjectInputStream in){
+        String userName;
+        String pass;
+        Scanner sc = new Scanner(System.in);
+        while(true){
+            System.out.println("Enter user name");
+            userName = sc.next();
+            System.out.println("Enter password");
+            pass = sc.next();
+            String[] data = { userName, pass };
+            try {
+                out.writeObject(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
