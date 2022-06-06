@@ -1,8 +1,16 @@
 package gui;
+import comp.*;
 
 public class Registered extends javax.swing.JFrame {
 
+    public Client client;
     
+
+    public Registered(Client c) {
+        client = c;
+        client.register();
+        initComponents();
+    }
     public Registered() {
         initComponents();
     }
@@ -64,18 +72,18 @@ public class Registered extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void LoginBActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        LoginPage lp = new LoginPage();
+        LoginPage lp = new LoginPage(client);
         lp.setVisible(true);
     }                                      
 
-    public static void main(String args[]) {
+    // public static void main(String args[]) {
       
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Registered().setVisible(true);
-            }
-        });
-    }
+    //     java.awt.EventQueue.invokeLater(new Runnable() {
+    //         public void run() {
+    //             new Registered().setVisible(true);
+    //         }
+    //     });
+    // }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton LoginB;

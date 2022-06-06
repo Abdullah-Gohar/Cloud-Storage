@@ -1,5 +1,7 @@
 package gui;
 import javax.swing.*;
+import comp.*;
+
 public class RegisterPage extends javax.swing.JFrame {
     
     

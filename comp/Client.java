@@ -161,11 +161,7 @@ public class Client {
         }
     }
 
-    public void register(ObjectOutputStream out,ObjectInputStream in){
-        Scanner sc = new Scanner(System.in);
-        int count;
-        int i = 0;
-        int choice;
+    public void register(){
         try{
             out.writeObject(0);
         }catch(IOException e){
@@ -177,40 +173,28 @@ public class Client {
     }
 
 
-    public void try_register(){
-        String userName;
-        String pass;
-        String purpose;
-        String email;
-        while (true) {
-            String[] data = { userName, pass, email, purpose };
-            // clientData Clientdata= new clientData(userName, pass, purpose);
-            // //dout=new DataOutputStream(socket.getOutputStream());
-            // out.writeObject(Clientdata);]
-            try {
-                out.writeObject(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Integer status = 1;
-            try {
-                status = (Integer) in.readObject();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException ce) {
-                ce.printStackTrace();
-            }
-
-            if (status == 0) {
-                System.out.println("Username already taken, please choose another one: ");
-            } else if (status == -1) {
-                System.out.println("dfa ho space nahi he ");
-                break;
-            } else {
-                break;
-            }
+    public int try_register(String userName, String pass, String email, String purpose){
+  
+        String[] data = { userName, pass, email, purpose };
+        // clientData Clientdata= new clientData(userName, pass, purpose);
+        // //dout=new DataOutputStream(socket.getOutputStream());
+        // out.writeObject(Clientdata);]
+        try {
+            out.writeObject(data);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        Integer status = 1;
+        try {
+            status = (Integer) in.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ce) {
+            ce.printStackTrace();
+        }
+
+        return status;
     }
 
 
