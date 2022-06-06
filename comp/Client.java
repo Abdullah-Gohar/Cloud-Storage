@@ -180,28 +180,43 @@ public class Client {
         return i;
     }
 
-    public void download() {
+
+    public void download(String fname){
+        try {
+            out.writeObject(1);
+            out.writeObject(fname);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void try_download() {
         try {
             String fname = (String) in.readObject();
             Long len = (Long) in.readObject();
-            File file = new File(String.format("D:\\CN\\Project\\%s", fname));
+            File file = new File(String.format("D:\\CN\\Project\\Downloads\\%s", fname));
 
             FileOutputStream fout = new FileOutputStream(file);
             byte[] buffer = new byte[Functions.buffer_size(len)];
             int count;
             int i = 0;
+            System.out.println(len);
+            System.out.println(file.length());
+            System.out.println("Before client");
+            
             while (file.length() < len) {
+                System.out.println(len);
+                System.out.println(file.length());
                 count = din.read(buffer);
                 fout.write(buffer, 0, count);
 
                 i++;
             }
-
+            System.out.println("After client");
             fout.close();
             
             System.out.println("Files");
             String str = "File Recieved!";
-            out.writeObject(str);
+            // out.writeObject(str);
             System.out.println("Files2");
 
         } catch (IOException e) {

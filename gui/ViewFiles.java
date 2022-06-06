@@ -1,4 +1,6 @@
 package gui;
+import javax.swing.AbstractButton;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -102,6 +104,7 @@ public class ViewFiles extends javax.swing.JFrame {
         setResizable(false);
         for(int i=0; i< files.length; i++) {
             JRadioButton b1= new JRadioButton();
+            b1.setActionCommand(files[i]);
             jPanel1.add(b1);
             b1.setText(files[i]);
             buttonGroup1.add(b1);
@@ -130,7 +133,10 @@ public class ViewFiles extends javax.swing.JFrame {
     }                                    
 
     private void DownloadActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+        String name = buttonGroup1.getSelection().getActionCommand();
+        client.download(name);
+        client.try_download();
+        JOptionPane.showMessageDialog(null, "File Downloaded!");
     }                                        
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {                                       

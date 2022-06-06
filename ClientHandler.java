@@ -108,7 +108,15 @@ public class ClientHandler implements Runnable{
     }
 
     public void upload(ObjectOutputStream out, ObjectInputStream in, DataOutputStream dout) {
-        File file = new File("D:\\CN\\Project\\dump\\data.txt");
+        String name = "";
+        try{
+            name  = (String) in.readObject();
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException ce){
+            ce.printStackTrace();
+        }
+        File file = new File(String.format("D:\\CN\\Project\\%s\\%s",user,name));
         FileInputStream fin = null;
         String fname = file.getName();
         try {
@@ -119,6 +127,7 @@ public class ClientHandler implements Runnable{
         // System.out.println(file.getTotalSpace());
         // System.out.println(file.length());
         Long len = file.length();
+        System.out.println("Before!");
         try {
             fin = new FileInputStream(file);
             out.writeObject(len);
@@ -133,16 +142,17 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("!");
 
-        try {
-            System.out.println("Loop Exit");
-            System.out.println((String) in.readObject());
-            System.out.println("Got it!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ce) {
-            ce.printStackTrace();
-        }
+        // try {
+        //     System.out.println("Loop Exit");
+        //     // System.out.println((String) in.readObject());
+        //     System.out.println("Got it!");
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // } catch (ClassNotFoundException ce) {
+        //     ce.printStackTrace();
+        // }
     }
 
 
@@ -157,14 +167,14 @@ public class ClientHandler implements Runnable{
         try{
             String fname = (String) in.readObject();
             len = (Long) in.readObject();
-            file = new File(String.format("F:\\CloudStorage\\comp\\%s\\%s", user, fname));
+            file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
 
             fout = new FileOutputStream(file);
             buffer = new byte[Functions.buffer_size(len)];
             
  
-            Connection connection = DriverManager.getConnection("jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
-                    //"jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+            Connection connection = DriverManager.getConnection(//"jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("Select SpaceOcc from Client where UserName  = '"+user+"'");
 
@@ -231,8 +241,8 @@ public class ClientHandler implements Runnable{
 
     public void register(ObjectOutputStream out, ObjectInputStream in){
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
-                    //"jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+            Connection connection = DriverManager.getConnection(//"jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
                     // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("select UserName from Client");
@@ -312,8 +322,8 @@ public class ClientHandler implements Runnable{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Connection connection = DriverManager.getConnection("jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
-               //"jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true"); // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
+                Connection connection = DriverManager.getConnection(//"jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+               "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true"); // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
                 // Connection connection = DriverManager.getConnection(
                 // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
                 // "jdbc:sqlserver://5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
@@ -384,7 +394,7 @@ public class ClientHandler implements Runnable{
         
         try{
         
-            file = new File(String.format("F:\\CloudStorage\\comp\\%s", user)); 
+            file = new File(String.format("D:\\CN\\Project\\%s", user)); 
             String [] allFiles = file.list();
             System.out.println(allFiles);
             out.writeObject(allFiles);
