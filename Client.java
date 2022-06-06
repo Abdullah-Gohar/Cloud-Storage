@@ -266,7 +266,7 @@ public class Client {
 
         }
     }
-    public String[] FilesNames(ObjectOutputStream out,ObjectInputStream in) {
+    public static String[] FilesNames(ObjectOutputStream out,ObjectInputStream in) {
         
         try{
             out.writeObject(3);

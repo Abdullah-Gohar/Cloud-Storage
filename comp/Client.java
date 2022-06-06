@@ -22,7 +22,7 @@ public class Client {
     public Client(){
         Scanner sc = new Scanner(System.in);
         try {
-            socket = new Socket("localhost", 8085);
+            socket = new Socket("192.168.143.52", 8085);
 
             dout = new DataOutputStream(socket.getOutputStream());
             din = new DataInputStream(socket.getInputStream());
@@ -139,6 +139,7 @@ public class Client {
         File file = new File(path);
         FileInputStream fin = null;
         String fname = file.getName();
+        Integer i =0;
         try {
             out.writeObject(fname);
         } catch (IOException e) {
@@ -151,25 +152,30 @@ public class Client {
             fin = new FileInputStream(file);
             out.writeObject(len);
 
-            byte[] buffer = new byte[Functions.buffer_size(len)];
-
-            int count;
-            while ((count = fin.read(buffer)) > 0) {
-                dout.write(buffer, 0, count);
+            i = 0;
+            try {
+                i = (Integer) in.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException ce) {
+                ce.printStackTrace();
             }
 
+            byte[] buffer = new byte[Functions.buffer_size(len)];
+
+            int count;            if(i==1){
+                while ((count = fin.read(buffer)) > 0) {
+                    dout.write(buffer, 0, count);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Integer i = 0;
         try {
-            i = (Integer) in.readObject();
             fin.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ce) {
-            ce.printStackTrace();
-        }
+        } 
         return i;
     }
 

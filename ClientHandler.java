@@ -46,6 +46,23 @@ public class ClientHandler implements Runnable{
 
             if (choice == 0) {
                 register(out, in);
+                login(out, in);
+                while (true) {
+                    try {
+                        choice = (Integer) in.readObject();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        break;
+                    } catch (ClassNotFoundException ce) {
+                        ce.printStackTrace();
+                        break;
+                    }
+                    if (choice == 1) {
+                        upload(out, in, dout);
+                    } else if (choice == 0) {
+                        download(out, in, din);
+                    }
+                }
             } else if (choice == 1) {
                 
                 login(out,in);
@@ -54,8 +71,10 @@ public class ClientHandler implements Runnable{
                         choice = (Integer) in.readObject();
                     } catch (IOException e) {
                         e.printStackTrace();
+                        break;
                     } catch (ClassNotFoundException ce) {
                         ce.printStackTrace();
+                        break;
                     }
                     if (choice == 1) {
                         upload(out, in, dout);
@@ -152,13 +171,23 @@ public class ClientHandler implements Runnable{
             ResultSet result = statement.executeQuery();
             result.next();
             long total =Long.parseLong(result.getString("SpaceOcc"));
-            if(total+len<2*1024*1024*1024){
+            System.out.println(total);
+            System.out.println(len);
+            long LEN = 2147483648L;
+            total += len;
+            System.out.println(total);
+            System.out.println(LEN);
+            System.out.println(total>LEN);
+            if(total>LEN){
+                System.out.println("in");
                 status = false;
                 out.writeObject(-1);
             }
             // connection.close();
-
+            
             if (status){
+                out.writeObject(1);
+                System.out.println("WHYYYYY!");
                 while (file.length() < len) {
                     count = din.read(buffer);
                     fout.write(buffer, 0, count);
@@ -177,7 +206,7 @@ public class ClientHandler implements Runnable{
 
                 System.out.println("Files");
                 String str = "File Recieved!";
-                out.writeObject(1);
+                // out.writeObject(1);
                 System.out.println("Files2");
                 fout.close();
             }
