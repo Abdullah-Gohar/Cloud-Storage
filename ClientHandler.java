@@ -62,11 +62,15 @@ public class ClientHandler implements Runnable{
                     } else if (choice ==0) {
                         download(out, in, din);
                     }
+                    else if(choice==3) {
+                        getFilesNames(out,in);
+                    }
                 }
                     // download(out, in, din);
                 // upload(out,in,dout);
 
             }
+            
 
 
 
@@ -140,8 +144,8 @@ public class ClientHandler implements Runnable{
             buffer = new byte[Functions.buffer_size(len)];
             
  
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+            Connection connection = DriverManager.getConnection("jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+                    //"jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("Select SpaceOcc from Client where UserName  = '"+user+"'");
 
@@ -198,8 +202,8 @@ public class ClientHandler implements Runnable{
 
     public void register(ObjectOutputStream out, ObjectInputStream in){
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+            Connection connection = DriverManager.getConnection("jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+                    //"jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
                     // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("select UserName from Client");
@@ -279,8 +283,8 @@ public class ClientHandler implements Runnable{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Connection connection = DriverManager.getConnection(
-               "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true"); // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
+                Connection connection = DriverManager.getConnection("jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
+               //"jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true"); // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
                 // Connection connection = DriverManager.getConnection(
                 // "jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
                 // "jdbc:sqlserver://5CB18B9:1433;databaseName=CloudStorage;userName=mishaltariq;password=123;trustServerCertificate=true");
@@ -345,5 +349,21 @@ public class ClientHandler implements Runnable{
             }
         }
     }
+    public void getFilesNames(ObjectOutputStream out,ObjectInputStream in){
+        
+        File file ;
+        
+        try{
+        
+            file = new File(String.format("F:\\CloudStorage\\comp\\%s", user)); 
+            String [] allFiles = file.list();
+            System.out.println(allFiles);
+            out.writeObject(allFiles);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
