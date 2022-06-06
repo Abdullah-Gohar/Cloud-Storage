@@ -42,11 +42,11 @@ public class Client {
             //     choice = sc.nextInt();
             //     sc.nextLine();
 
-            //     try {
-            //         out.writeObject(choice);
-            //     } catch (IOException e) {
-            //         e.printStackTrace();
-            //     }
+                // try {
+                //     out.writeObject(choice);
+                // } catch (IOException e) {
+                //     e.printStackTrace();
+                // }
             //     // upload(out,in,dout);
             //     if (choice == 0) {
             //         upload(out, in, dout);
@@ -88,7 +88,55 @@ public class Client {
     }
 
     public void upload(){
-        File file = new File("D:\\CN\\Project\\dump\\data.pdf");
+        try {
+            out.writeObject(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // File file = new File("D:\\CN\\Project\\dump\\data.pdf");
+        // FileInputStream fin = null;
+        // String fname = file.getName();
+        // try {
+        //     out.writeObject(fname);
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
+        // // System.out.println(file.getTotalSpace());
+        // // System.out.println(file.length());
+        // Long len = file.length();
+        // try{
+        //     fin = new FileInputStream(file);
+        //     out.writeObject(len);
+            
+        //     byte[] buffer = new byte[Functions.buffer_size(len)];
+
+        //     int count;
+        //     while ((count = fin.read(buffer)) > 0) {
+        //         dout.write(buffer, 0, count);
+        //     }
+
+        // }catch(IOException e){
+        //     e.printStackTrace();
+        // }
+        
+        // try{
+        //     Integer i = (Integer) in.readObject();
+        //     if(i==0){
+        //         System.out.println("No more space available! Failed to upload file!s");
+        //     }else{
+        //         System.out.println("Uploaded!");
+        //     }
+        //     fin.close();
+        // }catch(IOException e){
+        //     e.printStackTrace();
+        // }catch(ClassNotFoundException ce){
+        //     ce.printStackTrace();
+        // }
+    }
+
+
+    public int try_upload(String path){
+        File file = new File(path);
         FileInputStream fin = null;
         String fname = file.getName();
         try {
@@ -99,10 +147,10 @@ public class Client {
         // System.out.println(file.getTotalSpace());
         // System.out.println(file.length());
         Long len = file.length();
-        try{
+        try {
             fin = new FileInputStream(file);
             out.writeObject(len);
-            
+
             byte[] buffer = new byte[Functions.buffer_size(len)];
 
             int count;
@@ -110,23 +158,19 @@ public class Client {
                 dout.write(buffer, 0, count);
             }
 
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        try{
-            Integer i = (Integer) in.readObject();
-            if(i==0){
-                System.out.println("No more space available! Failed to upload file!s");
-            }else{
-                System.out.println("Uploaded!");
-            }
+        Integer i = 0;
+        try {
+            i = (Integer) in.readObject();
             fin.close();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch(ClassNotFoundException ce){
+        } catch (ClassNotFoundException ce) {
             ce.printStackTrace();
         }
+        return i;
     }
 
     public void download() {

@@ -85,7 +85,22 @@ public class Client1 extends javax.swing.JFrame {
 
     private void UploadBActionPerformed(java.awt.event.ActionEvent evt) {                                        
         JFileChooser jf = new JFileChooser();
-        jf.showSaveDialog(null);
+        int i = jf.showOpenDialog(null);
+        client.upload();
+        if(i==JFileChooser.APPROVE_OPTION){
+            String path = jf.getSelectedFile().getAbsolutePath();
+            System.out.println(path);
+            int status = client.try_upload(path);
+            if(status == 1){
+                JOptionPane.showMessageDialog(null, "File Uploaded!");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Space full dafa ho!");
+            }
+
+
+        }
+
     }                                       
 
     private void ViewFilesBActionPerformed(java.awt.event.ActionEvent evt) {                                           

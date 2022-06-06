@@ -49,31 +49,32 @@ public class ClientHandler implements Runnable{
             } else if (choice == 1) {
                 
                 login(out,in);
-                try {
-                    choice = (Integer) in.readObject();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException ce) {
-                    ce.printStackTrace();
+                while(true){
+                    try {
+                        choice = (Integer) in.readObject();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException ce) {
+                        ce.printStackTrace();
+                    }
+                    if (choice == 1) {
+                        upload(out, in, dout);
+                    } else if (choice ==0) {
+                        download(out, in, din);
+                    }
                 }
-                
-                if (choice == 1) {
-                    upload(out, in, dout);
-                } else if (choice ==0) {
-                    download(out, in, din);
-                }
-                // download(out, in, din);
+                    // download(out, in, din);
                 // upload(out,in,dout);
 
             }
 
 
 
-            out.close();
-            dout.close();
-            // fout.close();
-            din.close();
-            socket.close();
+            // out.close();
+            // dout.close();
+            // // fout.close();
+            // din.close();
+            // socket.close();
 
 
             
@@ -151,7 +152,7 @@ public class ClientHandler implements Runnable{
                 status = false;
                 out.writeObject(-1);
             }
-            connection.close();
+            // connection.close();
 
             if (status){
                 while (file.length() < len) {
@@ -162,10 +163,8 @@ public class ClientHandler implements Runnable{
                 }
                 try {
                     
-                    statement = connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"
-                            + String.format("%d", len) + " where UserName = '" + user + "'");
-
-                    result = statement.executeQuery();
+                    connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"
+                            + String.format("%d", len) + " where UserName = '" + user + "'").execute();
                     connection.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
