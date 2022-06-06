@@ -18,7 +18,6 @@ public class Main extends javax.swing.JFrame {
         Login = new javax.swing.JButton();
         Register = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 153));
 

@@ -135,9 +135,9 @@ public class ViewFiles extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {                                     
-        // dispose();
-        // Client1 c1 = new Client1();
-        // c1.setVisible(true);
+        dispose();
+        Client1 c1 = new Client1(client);
+        c1.setVisible(true);
     }                                    
 
     private void DownloadActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -153,6 +153,7 @@ public class ViewFiles extends javax.swing.JFrame {
         int status = client.try_delete(name);
         if (status == 1){
             JOptionPane.showMessageDialog(null, "File Deleted!");
+            currentSelected.setVisible(false);
             buttonGroup1.remove(currentSelected);
             jPanel1.remove(currentSelected);
             jPanel1.revalidate();
