@@ -105,7 +105,7 @@ public class Client1 extends javax.swing.JFrame {
 
     private void ViewFilesBActionPerformed(java.awt.event.ActionEvent evt) {                                           
         dispose();
-        ViewFiles v = new ViewFiles();
+        ViewFiles v = new ViewFiles(client);
         v.setVisible(true);
     }                                          
 

@@ -14,15 +14,16 @@ public class Client {
     private static String user = "";
     Socket socket = null;
     FileInputStream fin = null;
+    public static String[] files;
 
-    ObjectInputStream in;    DataOutputStream dout = null;
+    static ObjectInputStream in;    DataOutputStream dout = null;
     DataInputStream din = null;
-    ObjectOutputStream out;
+    static ObjectOutputStream out;
 
     public Client(){
         Scanner sc = new Scanner(System.in);
         try {
-            socket = new Socket("192.168.143.52", 8085);
+            socket = new Socket("localhost", 8085);
 
             dout = new DataOutputStream(socket.getOutputStream());
             din = new DataInputStream(socket.getInputStream());
@@ -221,6 +222,28 @@ public class Client {
         
         
     }
+    public String[] FilesNames() {
+        
+        try{
+            out.writeObject(3);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        try {
+            files=  (String[]) in.readObject();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException ce){
+            ce.printStackTrace();
+        }
+        for(int i=0; i<files.length; i++) {
+            System.out.println(files[i]);
+        }
+        return files;
+        
+    }
 
 
     public int try_register(String userName, String pass, String email, String purpose){
@@ -309,4 +332,6 @@ public class Client {
 
         return status;
     }
+
+    
 }

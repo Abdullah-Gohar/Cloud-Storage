@@ -157,7 +157,7 @@ public class ClientHandler implements Runnable{
         try{
             String fname = (String) in.readObject();
             len = (Long) in.readObject();
-            file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
+            file = new File(String.format("F:\\CloudStorage\\comp\\%s\\%s", user, fname));
 
             fout = new FileOutputStream(file);
             buffer = new byte[Functions.buffer_size(len)];

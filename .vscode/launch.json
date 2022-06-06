@@ -9,6 +9,20 @@
             "name": "Launch GuiTest",
             "request": "launch",
             "mainClass": "GuiTest",
+            "projectName": "CloudStorage_9243c821"
+        },
+        {
+            "type": "java",
+            "name": "Launch viewFilesTest",
+            "request": "launch",
+            "mainClass": "viewFilesTest",
+            "projectName": "CloudStorage_9243c821"
+        },
+        {
+            "type": "java",
+            "name": "Launch GuiTest",
+            "request": "launch",
+            "mainClass": "GuiTest",
             "projectName": "Project_ee3c908e"
         },
         {

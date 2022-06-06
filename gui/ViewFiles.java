@@ -1,11 +1,25 @@
 package gui;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
+import comp.*;
 
 public class ViewFiles extends javax.swing.JFrame {
 
+    Client client = null;
+    String[] files;
     public ViewFiles() {
         initComponents();
     }
 
+    public ViewFiles(Client c) {
+        client=c;
+        files= c.FilesNames();
+        initComponents();
+
+    }
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
@@ -29,7 +43,8 @@ public class ViewFiles extends javax.swing.JFrame {
                 BackActionPerformed(evt);
             }
         });
-
+        
+        
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         Delete.setText("Delete");
@@ -84,6 +99,26 @@ public class ViewFiles extends javax.swing.JFrame {
                     .addComponent(Download))
                 .addContainerGap())
         );
+        setResizable(false);
+        for(int i=0; i< files.length; i++) {
+            JRadioButton b1= new JRadioButton();
+            jPanel1.add(b1);
+            b1.setText(files[i]);
+            buttonGroup1.add(b1);
+
+        }
+        // JScrollPane pane = new JScrollPane(jPanel1);
+        // pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        JScrollPane scrollPane = new JScrollPane(jPanel1,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        
+        scrollPane.setViewportView(jPanel1);
+
+
+        add(scrollPane);
+
+
+
 
         pack();
     }// </editor-fold>                        
