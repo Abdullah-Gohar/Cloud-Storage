@@ -169,7 +169,12 @@ public class ClientHandler implements Runnable{
             long total =Long.parseLong(result.getString("SpaceOcc"));
             System.out.println(total);
             System.out.println(len);
-            if((total+len)>(2*1024*1024*1024)){
+            long LEN = 2147483648L;
+            total += len;
+            System.out.println(total);
+            System.out.println(LEN);
+            System.out.println(total>LEN);
+            if(total>LEN){
                 System.out.println("in");
                 status = false;
                 out.writeObject(-1);
