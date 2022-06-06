@@ -4,8 +4,14 @@ import comp.*;
 
 public class RegisterPage extends javax.swing.JFrame {
     
+    public Client client;
     
-    
+    public RegisterPage(Client c) {
+        client = c;
+        c.register();
+        initComponents();
+    }
+
     public RegisterPage() {
         initComponents();
     }
@@ -107,9 +113,24 @@ public class RegisterPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void RegisterBActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        Registered r= new Registered();
-        r.setVisible(true);
+    private void RegisterBActionPerformed(java.awt.event.ActionEvent evt) {    
+        String user = UserNameT.getText();
+        String pass  = PassT.getText();
+        String email = EmailT.getText();
+        String purpose = PurpT.getText();
+        int status = client.try_register(user,pass,email,purpose);
+        if(status == 1){
+            Registered r = new Registered();
+            r.setVisible(true);
+            dispose();
+        }
+        else if(status == 0){
+            JOptionPane.showMessageDialog(null, "Username already taken!");
+        }
+        else if(status == -1){
+            JOptionPane.showMessageDialog(null,"Dafa ho space nahi he!");
+        }                                      
+        
 
     }                                         
 

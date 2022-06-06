@@ -79,7 +79,7 @@ public class Main extends javax.swing.JFrame {
 
     private void RegisterActionPerformed(java.awt.event.ActionEvent evt) {                                         
         dispose();
-        RegisterPage rp = new RegisterPage();
+        RegisterPage rp = new RegisterPage(client);
         rp.setVisible(true);
     }                                        
 

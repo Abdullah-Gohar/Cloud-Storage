@@ -14,9 +14,9 @@ public class Client {
     private static String user = "";
     Socket socket = null;
     FileInputStream fin = null;
-    DataOutputStream dout = null;
+
+    ObjectInputStream in;    DataOutputStream dout = null;
     DataInputStream din = null;
-    ObjectInputStream in;
     ObjectOutputStream out;
 
     public Client(){

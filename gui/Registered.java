@@ -8,7 +8,6 @@ public class Registered extends javax.swing.JFrame {
 
     public Registered(Client c) {
         client = c;
-        client.register();
         initComponents();
     }
     public Registered() {

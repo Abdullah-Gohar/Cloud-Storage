@@ -200,7 +200,8 @@ public class ClientHandler implements Runnable{
     public void register(ObjectOutputStream out, ObjectInputStream in){
         try {
             Connection connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
+                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
+                    // "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
 
             PreparedStatement statement = connection.prepareStatement("select UserName from Client");
 
@@ -214,7 +215,7 @@ public class ClientHandler implements Runnable{
                     e.printStackTrace();
                 }
                 // Connection connection = DriverManager.getConnection(
-                // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=Resort_DB;userName=admin;password=123;trustServerCertificate=true");
+                // "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
 
                 while (result.next()) {
                     System.out.println(result.getString("UserName"));
