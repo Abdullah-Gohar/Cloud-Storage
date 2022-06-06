@@ -1,8 +1,12 @@
 package gui;
+import comp.*;
+
 public class Main extends javax.swing.JFrame {
 
-  
+    public Client client = null;
+
     public Main() {
+        client = new Client();
         initComponents();
     }
 
@@ -69,7 +73,7 @@ public class Main extends javax.swing.JFrame {
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {                                      
         dispose();
-        LoginPage lg = new LoginPage();
+        LoginPage lg = new LoginPage(client);
         lg.setVisible(true);
     }                                     
 

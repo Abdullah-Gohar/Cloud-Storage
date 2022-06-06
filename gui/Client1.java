@@ -1,13 +1,15 @@
 package gui;
+import comp.*; 
 
 import javax.swing.*;
 public class Client1 extends javax.swing.JFrame {
-
-    public Client1() {
+    Client client = null;
+    public Client1(Client c) {
+        client = c; 
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
@@ -98,14 +100,14 @@ public class Client1 extends javax.swing.JFrame {
         m.setVisible(true);
     }                                    
 
-    public static void main(String args[]) {
+    // public static void main(String args[]) {
       
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Client1().setVisible(true);
-            }
-        });
-    }
+    //     java.awt.EventQueue.invokeLater(new Runnable() {
+    //         public void run() {
+    //             new Client1().setVisible(true);
+    //         }
+    //     });
+    // }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton Back;

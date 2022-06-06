@@ -1,8 +1,15 @@
 package gui;
+import comp.*;
 
 public class LoginPage extends javax.swing.JFrame {
 
-  
+    public Client client = null;
+    public LoginPage(Client c) {
+        client = c;
+        initComponents();
+        client.login();
+    }
+    
     public LoginPage() {
         initComponents();
     }
@@ -92,9 +99,20 @@ public class LoginPage extends javax.swing.JFrame {
     }                                               
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        dispose();
-        Client1 c1= new Client1();
-        c1.setVisible(true);
+        // dispose();
+        int status = 0;
+        String user = UserName.getText();
+        String pass = jTextField1.getText();
+        status = client.try_login(user, pass);
+        System.out.println(status);
+        if(status ==1){
+            Client1 c1 = new Client1(client);
+            c1.setVisible(true);
+            dispose();
+        }
+        else{
+            jLabel1.setText("Error on login!");
+        }       
     }                                          
 
     private void ViewFilesBActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -102,14 +120,14 @@ public class LoginPage extends javax.swing.JFrame {
         ViewFiles v = new ViewFiles();
         v.setVisible(true);
     }      
-    public static void main(String args[]) {
+    // public static void main(String args[]) {
        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginPage().setVisible(true);
-            }
-        });
-    }
+    //     java.awt.EventQueue.invokeLater(new Runnable() {
+    //         public void run() {
+    //             new LoginPage().setVisible(true);
+    //         }
+    //     });
+    // }
     // Variables declaration - do not modify                     
     private javax.swing.JButton LoginButton;
     private javax.swing.JLabel Pass;

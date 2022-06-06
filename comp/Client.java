@@ -1,3 +1,4 @@
+package comp;
 import java.util.*;
 
 import javax.imageio.IIOException;
@@ -11,58 +12,63 @@ import java.io.*;
 
 public class Client {
     private static String user = "";
-    public static void main(String[] args) {
-        Socket socket = null;
-        FileInputStream fin = null;
-        DataOutputStream dout = null;
-        DataInputStream din = null;
-        ObjectInputStream in;
-        ObjectOutputStream out;
-        Scanner sc= new Scanner(System.in);
+    Socket socket = null;
+    FileInputStream fin = null;
+    DataOutputStream dout = null;
+    DataInputStream din = null;
+    ObjectInputStream in;
+    ObjectOutputStream out;
+
+    public Client(){
+        Scanner sc = new Scanner(System.in);
         try {
-            socket = new Socket("localhost",8085);
+            socket = new Socket("localhost", 8085);
 
             dout = new DataOutputStream(socket.getOutputStream());
             din = new DataInputStream(socket.getInputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-            File file = new File("D:\\CN\\Project\\dump\\data.txt");
-            int choice;
-            System.out.println("Enter 0 for Registeration and enter 1 to login");
-            choice = sc.nextInt();
-            if (choice == 0){
-                register(out,in);
-            }
-            else if(choice == 1){
-                login(out,in);
-            
+            out = new ObjectOutputStream(socket.getOutputStream()); 
 
-                System.out.println("Enter 0 to Upload, enter 1 to Download or enter 2 to delete: ");
-                choice = sc.nextInt();
-                sc.nextLine();
+            // File file = new File("D:\\CN\\Project\\dump\\data.txt");
+            // int choice;
+            // System.out.println("Enter 0 for Registeration and enter 1 to login");
+            // choice = sc.nextInt();
+            // if (choice == 0) {
+            //     register(out, in);
+            // } else if (choice == 1) {
+            //     login(out, in);
 
-                try{
-                    out.writeObject(choice);
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-                // upload(out,in,dout);
-                if (choice == 0) {
-                    upload(out,in,dout);
-                } else if (choice == 1) {
-                    download(out,in,din);
-                }else if (choice == 2){
-                    delete(out,in);
-                }
-            }
-            socket.close();
+            //     System.out.println("Enter 0 to Upload, enter 1 to Download or enter 2 to delete: ");
+            //     choice = sc.nextInt();
+            //     sc.nextLine();
+
+            //     try {
+            //         out.writeObject(choice);
+            //     } catch (IOException e) {
+            //         e.printStackTrace();
+            //     }
+            //     // upload(out,in,dout);
+            //     if (choice == 0) {
+            //         upload(out, in, dout);
+            //     } else if (choice == 1) {
+            //         download(out, in, din);
+            //     } else if (choice == 2) {
+            //         delete(out, in);
+            //     }
+            // }
+            // socket.close();
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Exception!");
         }
     }
 
-    public static void delete(ObjectOutputStream out,ObjectInputStream in){
+    public static void main(String[] args) {
+        
+        
+    }
+
+    public void delete(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the file name to delete: ");
         String fname = sc.nextLine();
@@ -81,7 +87,7 @@ public class Client {
         }
     }
 
-    public static void upload(ObjectOutputStream out,ObjectInputStream in, DataOutputStream dout){
+    public void upload(){
         File file = new File("D:\\CN\\Project\\dump\\data.pdf");
         FileInputStream fin = null;
         String fname = file.getName();
@@ -123,7 +129,7 @@ public class Client {
         }
     }
 
-    public static void download(ObjectOutputStream out, ObjectInputStream in, DataInputStream din) {
+    public void download() {
         try {
             String fname = (String) in.readObject();
             Long len = (Long) in.readObject();
@@ -155,7 +161,7 @@ public class Client {
         }
     }
 
-    public static void register(ObjectOutputStream out,ObjectInputStream in){
+    public void register(ObjectOutputStream out,ObjectInputStream in){
         Scanner sc = new Scanner(System.in);
         int count;
         int i = 0;
@@ -166,77 +172,21 @@ public class Client {
             e.printStackTrace();
         }
         
-        String userName;
-        String pass;
-        String purpose;
-        String email;
-        while(true){
-            System.out.println("Enter user name");
-            userName = sc.next();
-            System.out.println("Enter password");
-            pass = sc.next();
-            System.out.println("Enter email");
-            email = sc.next();
-            System.out.println("Enter purpose");
-            purpose = sc.next();
-            String[] data = { userName, pass, email, purpose };
-            // clientData Clientdata= new clientData(userName, pass, purpose);
-            // //dout=new DataOutputStream(socket.getOutputStream());
-            // out.writeObject(Clientdata);]
-            try{
-                out.writeObject(data);
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
-
-            
-
-
-
-
-            Integer status = 1;
-            try {
-                status = (Integer) in.readObject();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException ce){
-                ce.printStackTrace();
-            }
-
-            if(status == 0){
-                System.out.println("Username already taken, please choose another one: ");
-            }
-            else if(status == -1){
-                System.out.println("dfa ho space nahi he ");
-                break;
-            }
-            else{
-                break;
-            }
-        }
+        
         
     }
 
 
-
-
-    public static void login(ObjectOutputStream out, ObjectInputStream in){
+    public void try_register(){
         String userName;
         String pass;
-        Scanner sc = new Scanner(System.in);
-        try {
-            out.writeObject(1 );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        while(true){
-            System.out.println("Enter user name");
-            userName = sc.next();
-            System.out.println("Enter password");
-            pass = sc.next();
-            String[] data = { userName, pass };
+        String purpose;
+        String email;
+        while (true) {
+            String[] data = { userName, pass, email, purpose };
+            // clientData Clientdata= new clientData(userName, pass, purpose);
+            // //dout=new DataOutputStream(socket.getOutputStream());
+            // out.writeObject(Clientdata);]
             try {
                 out.writeObject(data);
             } catch (IOException e) {
@@ -251,14 +201,78 @@ public class Client {
             } catch (ClassNotFoundException ce) {
                 ce.printStackTrace();
             }
-            System.out.println(status);
+
             if (status == 0) {
-                System.out.println("Invalid data, please try again!");
+                System.out.println("Username already taken, please choose another one: ");
+            } else if (status == -1) {
+                System.out.println("dfa ho space nahi he ");
+                break;
             } else {
-                user = data[0];
                 break;
             }
-
         }
+    }
+
+
+
+    public void login(){
+        String userName;
+        String pass;
+        Scanner sc = new Scanner(System.in);
+        try {
+            out.writeObject(1 );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // while(true){
+        //     System.out.println("Enter user name");
+        //     userName = sc.next();
+        //     System.out.println("Enter password");
+        //     pass = sc.next();
+        //     String[] data = { userName, pass };
+        //     try {
+        //         out.writeObject(data);
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //     }
+
+        //     Integer status = 1;
+        //     try {
+        //         status = (Integer) in.readObject();
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //     } catch (ClassNotFoundException ce) {
+        //         ce.printStackTrace();
+        //     }
+        //     System.out.println(status);
+        //     if (status == 0) {
+        //         System.out.println("Invalid data, please try again!");
+        //     } else {
+        //         user = data[0];
+        //         break;
+        //     }
+
+        // }
+    }
+
+    public int try_login(String user,String pass){
+        String[] data = { user, pass };
+        try {
+            out.writeObject(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Integer status = 1;
+        try {
+            status = (Integer) in.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ce) {
+            ce.printStackTrace();
+        }
+
+        return status;
     }
 }
