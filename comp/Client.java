@@ -22,7 +22,7 @@ public class Client {
     public Client(){
         Scanner sc = new Scanner(System.in);
         try {
-            socket = new Socket("localhost", 8085);
+            socket = new Socket("192.168.143.52", 8085);
 
             dout = new DataOutputStream(socket.getOutputStream());
             din = new DataInputStream(socket.getInputStream());
