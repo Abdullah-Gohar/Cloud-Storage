@@ -70,22 +70,24 @@ public class Client {
     }
 
     public void delete(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the file name to delete: ");
-        String fname = sc.nextLine();
-        try{
+        try {
+            out.writeObject(2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int try_delete(String fname){
+        try {
             out.writeObject(fname);
             Integer status = (Integer) in.readObject();
-            if(status == 0){
-                System.out.println("Failed to delete the file");
-            }else if(status == 1){
-                System.out.println("Deleted the file!");
-            }
-        }catch(IOException e){ 
+            return status;
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch(ClassNotFoundException ce){
+        } catch (ClassNotFoundException ce) {
             ce.printStackTrace();
         }
+        return 0;
     }
 
     public void upload(){

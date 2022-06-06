@@ -81,6 +81,9 @@ public class ClientHandler implements Runnable{
                     } else if (choice ==0) {
                         download(out, in, din);
                     }
+                    else if (choice == 2){
+                        delete(out,in);
+                    }
                     else if(choice==3) {
                         getFilesNames(out,in);
                     }
@@ -104,6 +107,27 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getStackTrace());
+        }
+    }
+
+    public void delete(ObjectOutputStream out, ObjectInputStream in){
+        String fname = "";
+        try{
+            fname = (String) in.readObject();
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException ce){
+            ce.printStackTrace();
+        }
+        try{
+            File file = new File(String.format("D:\\CN\\Project\\%s\\%s",user,fname));
+            if(file.delete()){
+                out.writeObject(1);
+            }else{
+                out.writeObject(0);
+            }
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -138,6 +162,8 @@ public class ClientHandler implements Runnable{
             while ((count = fin.read(buffer)) > 0) {
                 dout.write(buffer, 0, count);
             }
+
+            fin.close();
 
         } catch (IOException e) {
             e.printStackTrace();

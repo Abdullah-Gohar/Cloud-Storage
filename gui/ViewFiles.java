@@ -5,6 +5,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.*;
 
 import comp.*;
 
@@ -12,6 +16,7 @@ public class ViewFiles extends javax.swing.JFrame {
 
     Client client = null;
     String[] files;
+    JRadioButton currentSelected;
     public ViewFiles() {
         initComponents();
     }
@@ -105,11 +110,14 @@ public class ViewFiles extends javax.swing.JFrame {
         for(int i=0; i< files.length; i++) {
             JRadioButton b1= new JRadioButton();
             b1.setActionCommand(files[i]);
+            b1.addActionListener(new selectButton());
             jPanel1.add(b1);
             b1.setText(files[i]);
             buttonGroup1.add(b1);
 
         }
+        Download.setEnabled(false);
+        Delete.setEnabled(false);
         // JScrollPane pane = new JScrollPane(jPanel1);
         // pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -140,7 +148,21 @@ public class ViewFiles extends javax.swing.JFrame {
     }                                        
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        // TODO add your handling code here:
+        String name = buttonGroup1.getSelection().getActionCommand();
+        client.delete();
+        int status = client.try_delete(name);
+        if (status == 1){
+            JOptionPane.showMessageDialog(null, "File Deleted!");
+            buttonGroup1.remove(currentSelected);
+            jPanel1.remove(currentSelected);
+            jPanel1.revalidate();
+            Delete.setEnabled(false);
+            Download.setEnabled(false);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "File failed to be deleted!");
+        }
+        revalidate();
     }                                      
 
     public static void main(String args[]) {
@@ -150,6 +172,19 @@ public class ViewFiles extends javax.swing.JFrame {
                 new ViewFiles().setVisible(true);
             }
         });
+    }
+
+    private class selectButton implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // if move_selected is true
+            currentSelected= (JRadioButton) e.getSource();
+            System.out.println(((JRadioButton) e.getSource()).getText());
+            Delete.setEnabled(true);
+            Download.setEnabled(true);
+
+        }
+
     }
 
     // Variables declaration - do not modify                     
