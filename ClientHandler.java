@@ -193,10 +193,6 @@ public class ClientHandler implements Runnable{
         try{
             String fname = (String) in.readObject();
             len = (Long) in.readObject();
-            file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
-
-            fout = new FileOutputStream(file);
-            buffer = new byte[Functions.buffer_size(len)];
             
  
             Connection connection = DriverManager.getConnection(//"jdbc:sqlserver://Hareem:1433;databaseName=CloudStorage;userName=hareem123;password=12345;trustServerCertificate=true");
@@ -222,6 +218,10 @@ public class ClientHandler implements Runnable{
             // connection.close();
             
             if (status){
+                file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
+
+                fout = new FileOutputStream(file);
+                buffer = new byte[Functions.buffer_size(len)];
                 out.writeObject(1);
                 System.out.println("WHYYYYY!");
                 while (file.length() < len) {
