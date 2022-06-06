@@ -123,45 +123,71 @@ public class ClientHandler implements Runnable{
 
 
     public void download(ObjectOutputStream out,ObjectInputStream in,DataInputStream din){
-        try {
+        int count;
+        int i = 0;
+        boolean status = true;
+        Long len = 0L;
+        File file;
+        byte[] buffer;
+        FileOutputStream fout = null;
+        try{
             String fname = (String) in.readObject();
-            Long len = (Long) in.readObject();
-            File file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
+            len = (Long) in.readObject();
+            file = new File(String.format("D:\\CN\\Project\\%s\\%s", user, fname));
 
-            FileOutputStream fout = new FileOutputStream(file);
-            byte[] buffer = new byte[Functions.buffer_size(len)];
-            int count;
-            int i = 0;
-            while (file.length() < len) {
-                count = din.read(buffer);
-                fout.write(buffer, 0, count);
+            fout = new FileOutputStream(file);
+            buffer = new byte[Functions.buffer_size(len)];
+            
+ 
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:sqlserver://DESKTOP-TA4RQON:1433;databaseName=CloudStorage;userName=admin;password=123;trustServerCertificate=true");
 
-                i++;
+            PreparedStatement statement = connection.prepareStatement("Select SpaceOcc from Client where UserName  = '"+user+"'");
+
+            ResultSet result = statement.executeQuery();
+            result.next();
+            long total =Long.parseLong(result.getString("SpaceOcc"));
+            if(total+len<2*1024*1024*1024){
+                status = false;
+                out.writeObject(-1);
             }
-            try{
-                Connection connection = DriverManager.getConnection(
-                       "jdbc:sqlserver://DESKTOP-IO2BR35:1433;databaseName=CloudStorage;userName=admin1;password=123;trustServerCertificate=true");
+            connection.close();
 
-                System.out.println("Update Client Set SpaceOcc = SpaceOcc+"+String.format("%d",len)+" where UserName = '"+user+"'");
-                       PreparedStatement statement = connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"+String.format("%d",len)+" where UserName = '"+user+"'");
-                   //   ResultSet resultSet = statement.executeQuery();
-                 statement.executeQuery();
-            }catch(SQLException e){
+            if (status){
+                while (file.length() < len) {
+                    count = din.read(buffer);
+                    fout.write(buffer, 0, count);
+
+                    i++;
+                }
+                try {
+                    
+                    statement = connection.prepareStatement("Update Client Set SpaceOcc = SpaceOcc+"
+                            + String.format("%d", len) + " where UserName = '" + user + "'");
+
+                    result = statement.executeQuery();
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            
+
+                System.out.println("Files");
+                String str = "File Recieved!";
+                out.writeObject(1);
+                System.out.println("Files2");
+                fout.close();
+            }
+            } catch (IOException e) {
                 e.printStackTrace();
+                // System.out.println(e.getStackTrace());
             }
-
-            System.out.println("Files");
-            String str = "File Recieved!";
-            out.writeObject(str);
-            System.out.println("Files2");
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // System.out.println(e.getStackTrace());
-        } catch (ClassNotFoundException ce) {
+             catch (SQLException e) {
+                e.printStackTrace();
+             }
+            catch(ClassNotFoundException ce){
             ce.printStackTrace();
-        }
+            }
     } 
 
      

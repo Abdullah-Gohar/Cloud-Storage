@@ -109,9 +109,12 @@ public class Client {
         }
         
         try{
-            System.out.println("Loop Exit");
-            System.out.println((String) in.readObject());
-            System.out.println("Got it!");
+            Integer i = (Integer) in.readObject();
+            if(i==0){
+                System.out.println("No more space available! Failed to upload file!s");
+            }else{
+                System.out.println("Uploaded!");
+            }
             fin.close();
         }catch(IOException e){
             e.printStackTrace();
